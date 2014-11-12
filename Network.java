@@ -9,7 +9,6 @@ class Network {
 
 
     }
-
     boolean load(String filename) {
         BufferedReader br = null;
         try {
@@ -20,7 +19,7 @@ class Network {
                 ++counter;
                 String[] all = line.split(",");
                 if (all.length != 4) {
-                    throw new ParseException("Invalid data on line: "+counter+"\n "+line);
+                    throw new ParseException(line, counter);
                 }
                 int buss = Integer.parseInt(all[0].trim());
                 String from = all[1].trim();

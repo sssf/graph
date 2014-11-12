@@ -28,25 +28,27 @@ public class Graph {
         return false;
     }
 
-    private Edge getEdge(Vertex from, Vertex to) {
+    private Edge getEdge(Vertex from, Vertex to)throws EdgeNotFoundException {
         for (Edge e : this.edges) {
             if (e.from == from && e.to == to) {
                 return e;
             }
         }
-        return null;
+        throw new EdgeNotFoundException();
     }
 
     public boolean connect(String from, String to, int weight) {
         Vertex a = this.getVertex(from);
         Vertex b = this.getVertex(to);
-        Edge e = this.getEdge(a, b);
-        if (e == null) {
+        Edge e;
+        try {
+            e = this.getEdge(a, b);
+            return false;
+        } catch (EdgeNotFoundException exception) {
             e = new Edge(a, b, weight);
             this.edges.add(e);
             return true;
-        }
-        return false;
+        } 
     }
 
     public String toString() {
@@ -68,7 +70,7 @@ public class Graph {
     private List<Edge> getAdjecent(Vertex v) {
         List<Edge> l = new LinkedList<Edge>();
         for (Edge e : this.edges) {
-            if (e.from.id.equals(v.id)) {
+            if (e.from.id.equals(v.id) && !e.to.visited) {
                 l.add(e);
             }
         }
@@ -116,7 +118,7 @@ public class Graph {
             for (Edge e : adjacent) {
                 if (e.to.cost == -1 || e.to.cost > current.cost + e.weight) {
                     e.to.cost = current.cost + e.weight;
-                    e.to.previous = current;
+                    e.to.previous = current;//När uppdateras current?
                 }
             }
         }
@@ -142,6 +144,10 @@ private class Vertex {
         Vertex(String id) {
             this.id = id;
         }
+
+        public String toString() {
+            return "Vertex "+id;
+        } 
     }
 
     private class Edge {
