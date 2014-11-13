@@ -28,7 +28,7 @@ public class Graph {
         return false;
     }
 
-    private Edge getEdge(Vertex from, Vertex to)throws EdgeNotFoundException {
+    private Edge getEdge(Vertex from, Vertex to) throws EdgeNotFoundException {
         for (Edge e : this.edges) {
             if (e.from == from && e.to == to) {
                 return e;
